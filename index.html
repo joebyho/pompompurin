@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="zh-HK">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>POMPOMPURIN</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;500;700&display=swap" rel="stylesheet" />
+
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100vh;
+      width: 100%;
+      background: linear-gradient(180deg, #ff3b3b 0%, #ffffff 100%);
+      font-family: "Noto Sans TC", sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      overflow: hidden;
+      position: relative;
+    }
+
+    /* 閃爍動畫 */
+    @keyframes sparkle {
+      0%, 100% { opacity: 1; filter: drop-shadow(0 0 6px rgba(255,255,255,1)); }
+      50% { opacity: 0.5; filter: drop-shadow(0 0 20px rgba(255,255,255,1)); }
+    }
+
+    /* 浮動動畫 */
+    @keyframes float {
+      0% { transform: translateY(0); }
+      100% { transform: translateY(-20px); }
+    }
+
+    .player-container {
+      max-width: 520px;
+      width: 90%;
+      background: rgba(255, 255, 255, 0.95);
+      padding: 35px;
+      border-radius: 18px;
+      border: 5px solid #ffb5b5;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
+      text-align: center;
+      z-index: 10;
+      animation: sparkle 3s infinite ease-in-out;
+    }
+
+    h1 {
+      color: #8b0000;
+      font-size: 32px;
+      margin-bottom: 25px;
+      font-weight: 700;
+      letter-spacing: 4px;
+      text-shadow: 0 0 10px rgba(255,255,255,0.6);
+    }
+
+    #start-button {
+      background-color: #b30000;
+      border: none;
+      color: white;
+      padding: 16px 32px;
+      font-size: 20px;
+      font-weight: bold;
+      border-radius: 12px;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.35);
+      transition: 0.3s;
+    }
+
+    #start-button:hover {
+      background-color: #7a0000;
+      transform: scale(1.05);
+      box-shadow: 0 6px 16px rgba(0,0,0,0.45);
+    }
+
+    .brand-message {
+      margin-top: 25px;
+      font-size: 18px;
+      color: #7a0000;
+      font-weight: 500;
+      text-shadow: 0 0 6px rgba(255, 255, 255, 0.5);
+    }
+
+    /* 裝飾物 */
+    .decoration {
+      position: absolute;
+      font-size: 80px;
+      opacity: 0.9;
+      animation: float 4s infinite alternate ease-in-out, sparkle 2s infinite;
+      z-index: 5;
+    }
+
+    .coffee { top: 12%; left: 8%; }
+    .pudding { bottom: 12%; right: 10%; }
+    .tree { top: 18%; right: 12%; font-size: 100px; }
+    .snowflake { bottom: 10%; left: 18%; font-size: 90px; }
+
+    /* 雪花飄落 */
+    .snow-layer {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      background-image:
+        radial-gradient(rgba(255,255,255,0.9) 2px, transparent 0),
+        radial-gradient(rgba(255,255,255,0.7) 1.5px, transparent 0),
+        radial-gradient(rgba(255,255,255,0.6) 1px, transparent 0);
+      background-size: 60px 60px, 100px 100px, 140px 140px;
+      animation: snowfall 16s linear infinite;
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    @keyframes snowfall {
+      0% { background-position: 0 0, 0 0, 0 0; }
+      100% { background-position: 400px 800px, 700px 900px, 1100px 950px; }
+    }
+
+  </style>
+</head>
+<body>
+
+  <div class="snow-layer"></div>
+
+  <div class="decoration coffee">☕</div>
+  <div class="decoration pudding">🍮</div>
+  <div class="decoration tree">🎄</div>
+  <div class="decoration snowflake">❄️</div>
+
+  <div class="player-container">
+    <h1>POMPOMPURIN✨</h1>
+    <button id="start-button">▶️ 播放POMPOMPURIN</button>
+    <div class="brand-message">POMPOMPURIN！</div>
+  </div>
+
+  <audio id="audio-player" style="display:none;"></audio>
+
+  <script>
+    const playlist = [
+      "POM POM PARADISE_FinalMix_2448.mp3"
+    ];
+
+    const audioPlayer = document.getElementById('audio-player');
+    let currentTrack = 0;
+
+    function playTrack(index) {
+      audioPlayer.src = playlist[index];
+      audioPlayer.play();
+    }
+
+    document.getElementById('start-button').addEventListener('click', () => {
+      playTrack(currentTrack);
+      document.getElementById('start-button').style.display = 'none';
+    });
+
+    audioPlayer.addEventListener('ended', () => {
+      currentTrack = (currentTrack + 1) % playlist.length;
+      playTrack(currentTrack);
+    });
+  </script>
+</body>
+</html>
